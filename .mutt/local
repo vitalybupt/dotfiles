@@ -1,0 +1,1 @@
+set header_cache=~/.mutt/cache/headersset message_cachedir=~/.mutt/cache/bodies
