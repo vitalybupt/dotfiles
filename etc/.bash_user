@@ -1,0 +1,8 @@
+export PATH=$PATH:${HOME}/programs/bin:/sbin:/usr/sbin
+
+
+for id in {1..4}; do
+    if [ ! -e /tmp/.zjw_switch$id ]; then
+	vde_switch --hub --sock /tmp/zjw_switch$id -p /tmp/.zjw_switch$id -d > /dev/null&
+    fi
+done

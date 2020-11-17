@@ -1,0 +1,62 @@
+# 打开中断
+alt + Return
+  rxvt-unicode
+
+# 关闭当前窗口
+super + c
+  bspc node -c 
+
+super + h
+  bspc desktop -f I
+
+# 如果当前桌面有多个窗口，
+# 就在当前桌面跳转窗口
+# 否则替换之前桌面的窗口
+alt + Tab
+  node_num=`bspc query -N -n .leaf -d | wc -l`; \
+  if [ $node_num -eq 1 ]; then \
+  bspc node -f last;\
+  else \
+  bspc node -f next.local; \
+  fi
+
+# 跳转到指定的窗口
+alt + {Left, Right}
+  bspc node -f {west.local, east.local}
+
+# 交换窗口
+ctrl + b; s; {Up,Down,Left,Right}
+     bspc node -s {north.local, south.local, west.local, east.local}
+
+# 将当前的窗口发送到指定的桌面
+ctrl + b; ctrl + {1-8}
+  bspc node -d {I,II,III,IV,V,VI,VII,VIII}
+
+# 切换到下一个桌面
+super + x;  n
+  bspc desktop --focus next
+
+# 切换到上一个桌面
+super + x;  p
+  bspc desktop --focus prev
+
+# 切换到指定的桌面
+ctrl + b; {1-8}
+  bspc desktop -f {I,II,III,IV,V,VI,VII,VIII}
+
+# 跳转到之前的显示器
+ctrl + b; ctrl + b
+  bspc monitor -f last
+
+# reload 配置
+super + Escape
+    pkill -USR1 -x sxhkd
+
+# 打开菜单
+super + space
+  dmenu_run -b -p  "Run"
+
+# quit/restart bspwm
+shift + alt + {q,r}
+  bspc {quit,wm -r}
+

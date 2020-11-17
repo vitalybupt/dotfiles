@@ -1,0 +1,70 @@
+! URxvt Appearance
+URxvt.geometry:             90x30
+URxvt.transparent:          false
+URxvt.fading:               0
+URxvt.loginShell:           true
+URxvt.saveLines:            50
+URxvt.internalBorder:       3
+URxvt.lineSpace:            0
+
+
+URxvt.scrollBar: false
+URxvt.iso14755: false
+
+URxvt.allow_bold:           false
+
+!URxvt.font: xft:terminal:style=Regular:size=14
+URxvt.font: xft:Iosevka Custom:style=Regular:size=15
+URxvt*boldFont: xft:Iosevka Custom:style=Bold:size=15
+
+! Fix font space
+URxvt*letterSpace: -1
+
+
+!! transparence configure
+URxvt.depth: 32
+URxvt.background: rgba:0000/2b00/3600/f000
+
+!!Source http://github.com/altercation/solarized
+	 
+!!*foreground: #657b83
+*foreground: #D3D3D3
+!!*fading: 40
+*fadeColor: #002b36
+*cursorColor: #93a1a1
+*pointerColorBackground: #586e75
+*pointerColorForeground: #93a1a1
+
+!! black dark/light
+*color0: #073642
+*color8: #002b36
+
+!! red dark/light
+*color1: #dc322f
+*color9: #cb4b16
+
+
+!! green dark/light
+*color2: #859900
+*color10: #32CD32
+
+!! yellow dark/light
+*color3: #b58900
+*color11: #657b83
+
+!! blue dark/light
+*color4: #268bd2
+!!*color12: #839496
+*color12: #0C71E0
+
+!! magenta dark/light
+*color5: #d33682
+*color13: #6c71c4
+
+!! cyan dark/light
+*color6: #2aa198
+*color14: #93a1a1
+
+!! white dark/light
+*color7: #eee8d5
+*color15: #fdf6e3

@@ -1,0 +1,40 @@
+#! /bin/sh
+basedir=$(dirname $0)
+sxhkd &
+
+# 创建四个桌面
+bspc monitor VGA-0 -d I II III IV
+bspc monitor DVI-I-1 -d V VI VII VIII
+
+bspc config border_width         3
+bspc config window_gap          10
+bspc config top_padding         10
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+# 设置不同的颜色
+#bspc config focused_border_color '#928374'
+bspc config focused_border_color '#b0a59b'
+
+# rules
+bspc rule -a Chromium desktop='^1'
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off
+bspc rule -a Emacs state=tiled
+bspc rule -a Emacs desktop='^2'
+
+# 设置鼠标的样子
+xsetroot -cursor_name left_ptr &
+
+# 设置背景
+nitrogen --set-scaled /home/junwei/.config/bspwm/themes/interstellar.3840x1080.jpg
+
+# 启动 compositor
+compton --xrender-sync --xrender-sync-fence&
+
+# 启动状态栏并设置透明效果
+${basedir}/../dzen2script/dzen2.sh &
+transset .7 -n dzen2bar
+
