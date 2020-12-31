@@ -1,17 +1,17 @@
-# ´ò¿ªÖĞ¶Ï
+# æ‰“å¼€ä¸­æ–­
 alt + Return
   rxvt-unicode
 
-# ¹Ø±Õµ±Ç°´°¿Ú
+# å…³é—­å½“å‰çª—å£
 super + c
-  bspc node -c 
+  bspc node -c
 
 super + h
   bspc desktop -f I
 
-# Èç¹ûµ±Ç°×ÀÃæÓĞ¶à¸ö´°¿Ú£¬
-# ¾ÍÔÚµ±Ç°×ÀÃæÌø×ª´°¿Ú
-# ·ñÔòÌæ»»Ö®Ç°×ÀÃæµÄ´°¿Ú
+# å¦‚æœå½“å‰æ¡Œé¢æœ‰å¤šä¸ªçª—å£ï¼Œ
+# å°±åœ¨å½“å‰æ¡Œé¢è·³è½¬çª—å£
+# å¦åˆ™æ›¿æ¢ä¹‹å‰æ¡Œé¢çš„çª—å£
 alt + Tab
   node_num=`bspc query -N -n .leaf -d | wc -l`; \
   if [ $node_num -eq 1 ]; then \
@@ -20,43 +20,42 @@ alt + Tab
   bspc node -f next.local; \
   fi
 
-# Ìø×ªµ½Ö¸¶¨µÄ´°¿Ú
-alt + {Left, Right}
-  bspc node -f {west.local, east.local}
+# è·³è½¬åˆ°æŒ‡å®šçš„çª—å£
+ctrl + b; {Up, Down, Left, Right}
+  bspc node -f {north.local, south.local, west.local, east.local}
 
-# ½»»»´°¿Ú
+# åœ¨å½“å‰æ¡Œé¢äº¤æ¢çª—å£
 ctrl + b; s; {Up,Down,Left,Right}
      bspc node -s {north.local, south.local, west.local, east.local}
 
-# ½«µ±Ç°µÄ´°¿Ú·¢ËÍµ½Ö¸¶¨µÄ×ÀÃæ
+# å°†å½“å‰çš„çª—å£å‘é€åˆ°æŒ‡å®šçš„æ˜¾ç¤ºå™¨
 ctrl + b; ctrl + {1-8}
-  bspc node -d {I,II,III,IV,V,VI,VII,VIII}
+     bspc node -d {I,II,III,IV,V,VI,VII,VIII}
 
-# ÇĞ»»µ½ÏÂÒ»¸ö×ÀÃæ
-super + x;  n
+# åˆ‡æ¢åˆ°ä¸‹ä¸€ä¸ªæ¡Œé¢
+ctrl + b;  n
   bspc desktop --focus next
 
-# ÇĞ»»µ½ÉÏÒ»¸ö×ÀÃæ
-super + x;  p
+# åˆ‡æ¢åˆ°ä¸Šä¸€ä¸ªæ¡Œé¢
+ctrl + b;  p
   bspc desktop --focus prev
 
-# ÇĞ»»µ½Ö¸¶¨µÄ×ÀÃæ
+# åˆ‡æ¢åˆ°æŒ‡å®šçš„æ¡Œé¢
 ctrl + b; {1-8}
   bspc desktop -f {I,II,III,IV,V,VI,VII,VIII}
 
-# Ìø×ªµ½Ö®Ç°µÄÏÔÊ¾Æ÷
+# è·³è½¬åˆ°ä¹‹å‰çš„æ˜¾ç¤ºå™¨
 ctrl + b; ctrl + b
   bspc monitor -f last
 
-# reload ÅäÖÃ
+# reload é…ç½®
 super + Escape
     pkill -USR1 -x sxhkd
 
-# ´ò¿ª²Ëµ¥
-super + space
+# æ‰“å¼€èœå•
+ctrl + b; space
   dmenu_run -b -p  "Run"
 
 # quit/restart bspwm
 shift + alt + {q,r}
   bspc {quit,wm -r}
-

@@ -23,7 +23,7 @@ bspc rule -a Chromium desktop='^1'
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 bspc rule -a Emacs state=tiled
-bspc rule -a Emacs desktop='^2'
+bspc rule -a Emacs desktop='^1'
 
 # 设置鼠标的样子
 xsetroot -cursor_name left_ptr &
@@ -32,9 +32,8 @@ xsetroot -cursor_name left_ptr &
 nitrogen --set-scaled /home/junwei/.config/bspwm/themes/interstellar.3840x1080.jpg
 
 # 启动 compositor
-compton --xrender-sync --xrender-sync-fence&
+compton --inactive-dim 0.1 --backend glx --blur-background --xrender-sync --xrender-sync-fence&
 
 # 启动状态栏并设置透明效果
 ${basedir}/../dzen2script/dzen2.sh &
 transset .7 -n dzen2bar
-

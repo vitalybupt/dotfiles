@@ -5,8 +5,8 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 
-;; Õ®”√≈‰÷√
-(package-initialize)
+
+ (package-initialize)
 
 (setq load-path (append
                  load-path
@@ -28,7 +28,7 @@
 (column-number-mode t)
 (display-time-mode t)
 (setq auto-save-interval 300)
-;; avoid jump to former paenthese 
+;; avoid jump to former paenthese
 (setq show-paren-mode 't)
 (setq show-paren-style 'parentheses)	; seems does not work
 ;; avoid jump when scrolling
@@ -47,25 +47,25 @@
 (setq font-lock-maximum-decoration t)
 ;; auto complete function
 (global-set-key "\M- " 'hippie-expand)
-(setq hippie-expand-try-functions-list 
-      '(try-complete-file-name-partially 
-	try-complete-file-name 
-	try-expand-all-abbrevs 
-	try-expand-list 
-	try-expand-line 
-	try-expand-dabbrev 
-	try-expand-dabbrev-all-buffers 
-	try-expand-dabbrev-from-kill 
-	try-complete-lisp-symbol-partially 
+(setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+	try-complete-file-name
+	try-expand-all-abbrevs
+	try-expand-list
+	try-expand-line
+	try-expand-dabbrev
+	try-expand-dabbrev-all-buffers
+	try-expand-dabbrev-from-kill
+	try-complete-lisp-symbol-partially
 	try-complete-lisp-symbol))
-;; match the next bracket 
+;; match the next bracket
 (defun match-paren (arg)
   "Go to the matching paren if on a paren; otherwise insert %."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
 	((looking-at "\\s\)") (forward-char 1) (backward-list 1))
 	(t (self-insert-command (or arg 1)))))
-(global-set-key "%" 'match-paren) 
+(global-set-key "%" 'match-paren)
 ;; hot key for goto-line
 (global-set-key "\M-g" 'goto-line)
 ;;}}}
@@ -106,7 +106,7 @@
  '(auto-compression-mode t nil (jka-compr))
  '(case-fold-search t)
  '(column-number-mode t)
- '(current-language-environment "Chinese-GB")
+ '(current-language-environment "UTF-8")
  '(custom-enabled-themes (quote (sanityinc-solarized-dark)))
  '(custom-safe-themes
    (quote
@@ -123,7 +123,7 @@
     ("~/documents/personel/notes/kernel.org" "~/documents/work/notes/note.org" "~/documents/work/notes/work.org" "~/documents/work/notes/tasks.org")))
  '(package-selected-packages
    (quote
-    (notmuch tabbar ivy-mpdel libmpdel mpdel transient jinja2-mode htmlize plantuml-mode jedi rfc-mode markdown-mode color-theme-sanityinc-solarized use-package posframe gnu-elpa-keyring-update yang-mode metaweblog org2blog pyim pyim-basedict go-mode helm less-css-mode ztree yaml-mode vbasense uncrustify-mode sr-speedbar screenshot magit lua-mode json-mode groovy-mode gradle-mode flymake-lua cmake-font-lock)))
+    (ox-hugo notmuch tabbar ivy-mpdel libmpdel mpdel transient jinja2-mode htmlize plantuml-mode jedi rfc-mode markdown-mode color-theme-sanityinc-solarized use-package posframe gnu-elpa-keyring-update yang-mode metaweblog org2blog pyim pyim-basedict go-mode helm less-css-mode ztree yaml-mode vbasense uncrustify-mode sr-speedbar screenshot magit lua-mode json-mode groovy-mode gradle-mode flymake-lua cmake-font-lock)))
  '(send-mail-function (quote sendmail-query-once))
  '(show-paren-mode t)
  '(tool-bar-mode nil nil (tool-bar))
@@ -166,7 +166,7 @@
 (autoload 'rfc-mode "rfc-mode" nil t)
 
 (if (fboundp 'global-font-lock-mode)
-    (global-font-lock-mode 1)) 
+    (global-font-lock-mode 1))
 
 (setq default-fill-column 60)
 
@@ -177,7 +177,6 @@
   ;; If there is more than one, they won't work right.
 ;; )
 
-;; »± °◊÷ÃÂ…Ë∂®
 (if (display-graphic-p)
 (let ((emacs-font-size 15)
       (emacs-font-name "Iosevka Custom"))
@@ -188,7 +187,6 @@
 
 (setq x-select-enable-clipboard t)
 
-;; ◊‘∂®“ÂC”Ô—‘∑Á∏Ò
 (defconst my-c-style
   '((c-tab-always-indent           . t)
 ;;    (c-comment-only-line-offset    . 4)
@@ -214,12 +212,13 @@
 ;; Customizations for all of c-mode, c++-mode, and objc-mode
 (defun my-c-mode-common-hook ()
   ;; add my personal style and set it for the current buffer
-;;  (c-add-style "PERSONAL" my-c-style t)
+  ;; (c-add-style "PERSONAL" my-c-style t)
   ;; offset customizations not in my-c-style
-  ;;  (c-set-offset 'member-init-intro '++)
+  ;; (c-set-offset 'member-init-intro '++)
   (c-set-style "linux")
   (electric-pair-mode '1)
   ;; other customizations
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
 ;;  (setq tab-width 4
         ;; this will make sure spaces are used instead of tabs
 ;;        indent-tabs-mode nil)
@@ -230,7 +229,12 @@
   (define-key c-mode-map "\C-m" 'newline-and-indent)
   )
 
+(defun cscope-minor-mode-on ()
+  "Turn on `cscope-minor-mode' mode."
+  (interactive)
+  (cscope-minor-mode 1))
 (add-hook 'c-mode-hook 'my-c-mode-common-hook)
+(add-hook 'c-mode-hook 'cscope-minor-mode-on)
 
 (setq auto-mode-alist
       (cons '("\\.test\\'" . tcl-mode)
@@ -266,6 +270,35 @@
 (setq auto-mode-alist
       (cons '("\\.map\\'" . lua-mode)
 	    auto-mode-alist))
+
+;;(add-to-list 'org-emphasis-alist
+;;             '("*" (:foreground "#F4A460")
+;;               ))
+
+(setq org2blog/wp-blog-alist
+      '(("myblog"
+         :url "https://flyingbyte.tk/xmlrpc.php"
+         :username "vitaly")))
+(setq org2blog/wp-use-sourcecode-shortcode t)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (ditaa . t)))
+
+;; org Ê®°Âºè export plantumlÈÖçÁΩÆ
+(setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+(setq plantuml-default-exec-mode 'jar)
+(require 'ob-plantuml)
+
+;; org Ê®°Âºè export ditaaÈÖçÁΩÆ
+(setq org-ditaa-jar-path "/usr/bin/ditaa")
+(require 'ob-ditaa)
+
+
+(with-eval-after-load 'ox
+  (require 'ox-hugo))
+
 
 ;;(setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
 ;;(setcar (nthcdr 1 org-emphasis-regexp-components) "[:alpha:]- \t.,:!?;'\")}\\")
@@ -331,7 +364,7 @@
 (defun my-fold-dwin-hook ()
    (fold-dwim-turn-on-hs-and-hide)
    )
-  
+
 (defun my-xhtml-extras ()
    (make-local-variable 'outline-regexp)
    (setq outline-regexp "\\s *<\\([h][1-6]\\|html\\|body\\|head\\)\\b")
@@ -374,7 +407,7 @@
 (setq tramp-ssh-controlmaster-options
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
-;(add-hook ¬°¬Æc-mode-hook (lambda () (add-to-list ¬°¬Æwrite-file-functions ¬°¬Ædelete-trailing-whitespace)))
+(add-hook 'c-mode-hook (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
 ;(add-to-list 'load-path "/home/zjw/etc/Emacs/helm-master/")
 ;(require 'helm-onfig)
@@ -395,13 +428,13 @@
 putting the matching lines in a buffer named *matching*"
   (interactive "sRegexp to match: ")
   (let ((result-buffer (get-buffer-create "*matching*")))
-    (with-current-buffer result-buffer 
+    (with-current-buffer result-buffer
       (erase-buffer))
-    (save-match-data 
+    (save-match-data
       (save-excursion
         (goto-char (point-min))
         (while (re-search-forward re nil t)
-          (princ (buffer-substring-no-properties (line-beginning-position) 
+          (princ (buffer-substring-no-properties (line-beginning-position)
                                                  (line-beginning-position 2))
                  result-buffer))))
     (pop-to-buffer result-buffer)))
@@ -432,16 +465,9 @@ putting the matching lines in a buffer named *matching*"
 
 
 
-;;(add-to-list 'org-emphasis-alist
-;;             '("*" (:foreground "#F4A460")
-;;               ))
 
 (electric-pair-mode 1)
 
-(setq org2blog/wp-blog-alist
-      '(("myblog"
-         :url "https://flyingbyte.tk/xmlrpc.php"
-         :username "vitaly")))
 
 ;(setq url-proxy-services '(("no_proxy" . "6wind\\.com")
 ;                          ("http" . "10.80.1.2:8080")
@@ -595,7 +621,6 @@ putting the matching lines in a buffer named *matching*"
     (url-http-debug "Request is: \n%s" request)
     request))
 
-(setq org2blog/wp-use-sourcecode-shortcode t)
 
 (setq visible-bell 1)
 
@@ -604,12 +629,6 @@ putting the matching lines in a buffer named *matching*"
               '(("\\.[Aa][Ss][Nn]\\([1]\\|[pP][pP]?\\)?$" . asn1-mode)
 		("\\.[Aa][Ss][Nn][dD]$" . asn1-diff-mode2))))
 
-(defun cscope-minor-mode-on ()
-  "Turn on `cscope-minor-mode' mode."
-  (interactive)
-  (cscope-minor-mode 1))
-
-(add-hook 'c-mode-hook 'cscope-minor-mode-on)
 
 (add-hook 'python-mode-hook #'(lambda ()
                              (cscope-minor-mode-on)
@@ -619,65 +638,52 @@ putting the matching lines in a buffer named *matching*"
 	     :ensure nil
 	     :demand t
 	     :config
-	     ;; º§ªÓ basedict ∆¥“Ù¥ ø‚£¨ŒÂ± ”√ªß«ÎºÃ–¯‘ƒ∂¡ README
+	     ;; ÊøÄÊ¥ª basedict ÊãºÈü≥ËØçÂ∫ìÔºå‰∫îÁ¨îÁî®Êà∑ËØ∑ÁªßÁª≠ÈòÖËØª README
 	     (use-package pyim-basedict
 			  :ensure nil
 			  :config (pyim-basedict-enable))
 
 	     (setq default-input-method "pyim")
 
-	     ;; Œ“ π”√»´∆¥
+	     ;; Êàë‰ΩøÁî®ÂÖ®Êãº
 	     (setq pyim-default-scheme 'quanpin)
-	     
-	     ;; …Ë÷√ pyim ÃΩ’Î…Ë÷√£¨’‚ « pyim ∏ﬂº∂π¶ƒ‹…Ë÷√£¨ø…“‘ µœ÷ *ŒﬁÕ¥* ÷–”¢Œƒ«–ªª :-)
-	     ;; Œ“◊‘º∫ π”√µƒ÷–”¢Œƒ∂ØÃ¨«–ªªπÊ‘Ú «£∫
-	     ;; 1. π‚±Í÷ª”–‘⁄◊¢ Õ¿Ô√Ê ±£¨≤≈ø…“‘ ‰»Î÷–Œƒ°£
-	     ;; 2. π‚±Í«∞ «∫∫◊÷◊÷∑˚ ±£¨≤≈ƒ‹ ‰»Î÷–Œƒ°£
-	     ;; 3.  π”√ M-j øÏΩ›º¸£¨«ø÷∆Ω´π‚±Í«∞µƒ∆¥“Ù◊÷∑˚¥Æ◊™ªªŒ™÷–Œƒ°£
+
+	     ;; ËÆæÁΩÆ pyim Êé¢ÈíàËÆæÁΩÆÔºåËøôÊòØ pyim È´òÁ∫ßÂäüËÉΩËÆæÁΩÆÔºåÂèØ‰ª•ÂÆûÁé∞ *Êó†Áóõ* ‰∏≠Ëã±ÊñáÂàáÊç¢ :-)
+	     ;; ÊàëËá™Â∑±‰ΩøÁî®ÁöÑ‰∏≠Ëã±ÊñáÂä®ÊÄÅÂàáÊç¢ËßÑÂàôÊòØÔºö
+	     ;; 1. ÂÖâÊ†áÂè™ÊúâÂú®Ê≥®ÈáäÈáåÈù¢Êó∂ÔºåÊâçÂèØ‰ª•ËæìÂÖ•‰∏≠Êñá„ÄÇ
+	     ;; 2. ÂÖâÊ†áÂâçÊòØÊ±âÂ≠óÂ≠óÁ¨¶Êó∂ÔºåÊâçËÉΩËæìÂÖ•‰∏≠Êñá„ÄÇ
+	     ;; 3. ‰ΩøÁî® M-j Âø´Êç∑ÈîÆÔºåÂº∫Âà∂Â∞ÜÂÖâÊ†áÂâçÁöÑÊãºÈü≥Â≠óÁ¨¶‰∏≤ËΩ¨Êç¢‰∏∫‰∏≠Êñá„ÄÇ
 	     (setq-default pyim-english-input-switch-functions
 			   '(pyim-probe-dynamic-english
 			     pyim-probe-isearch-mode
 			     pyim-probe-program-mode
 			     pyim-probe-org-structure-template))
-	     
+
 	     (setq-default pyim-punctuation-half-width-functions
 			   '(pyim-probe-punctuation-line-beginning
 			     pyim-probe-punctuation-after-punctuation))
-	     
-	     ;; ø™∆Ù∆¥“ÙÀ—À˜π¶ƒ‹
+
+	     ;; ÂºÄÂêØÊãºÈü≥ÊêúÁ¥¢ÂäüËÉΩ
 	     (pyim-isearch-mode 1)
-	     
-	     ;;  π”√ popup-el ¿¥ªÊ÷∆—°¥ øÚ, »Áπ˚”√ emacs26, Ω®“È…Ë÷√
-	     ;; Œ™ 'posframe, ÀŸ∂»∫‹øÏ≤¢«“≤Àµ•≤ªª·±‰–Œ£¨≤ªπ˝–Ë“™”√ªß
-	     ;;  ÷∂Ø∞≤◊∞ posframe ∞¸°£
+
+	     ;; ‰ΩøÁî® popup-el Êù•ÁªòÂà∂ÈÄâËØçÊ°Ü, Â¶ÇÊûúÁî® emacs26, Âª∫ËÆÆËÆæÁΩÆ
+	     ;; ‰∏∫ 'posframe, ÈÄüÂ∫¶ÂæàÂø´Âπ∂‰∏îËèúÂçï‰∏ç‰ºöÂèòÂΩ¢Ôºå‰∏çËøáÈúÄË¶ÅÁî®Êà∑
+	     ;; ÊâãÂä®ÂÆâË£Ö posframe ÂåÖ„ÄÇ
 	     (setq pyim-page-tooltip 'posframe)
-	     
-	     ;; —°¥ øÚœ‘ æ5∏ˆ∫Ú—°¥ 
+
+	     ;; ÈÄâËØçÊ°ÜÊòæÁ§∫5‰∏™ÂÄôÈÄâËØç
 	     (setq pyim-page-length 5)
-	     
+
 	     :bind
-	     (("M-j" . pyim-convert-string-at-point) ;”Î pyim-probe-dynamic-english ≈‰∫œ
+	     (("M-j" . pyim-convert-string-at-point) ;‰∏é pyim-probe-dynamic-english ÈÖçÂêà
 	      ("C-;" . pyim-delete-word-from-personal-buffer)))
 
 
 (require 'posframe)
 (set-face-attribute 'pyim-page t :foreground "#acdccc")
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (ditaa . t)))
 
-;; plantuml≈‰÷√ 
-(setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
-(setq plantuml-default-exec-mode 'jar)
-(require 'ob-plantuml)
-
-;; ditaa≈‰÷√
-(setq org-ditaa-jar-path "/usr/bin/ditaa")
-(require 'ob-ditaa)
-
-;; emacs daemon ƒ£ Ω∫ˆ¬‘¡À÷˜Ã‚∫Õ◊÷ÃÂµƒ≈‰÷√
+;; emacs daemon Ê®°ÂºèÂøΩÁï•‰∫Ü‰∏ªÈ¢òÂíåÂ≠ó‰ΩìÁöÑÈÖçÁΩÆ
 ;(defun load-theme-font (frame)
 ;  (select-frame frame)
 ;  (load-theme 'sanityinc-solarized-dark t))
