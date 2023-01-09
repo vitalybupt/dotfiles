@@ -6,7 +6,7 @@
 ;; You may delete these explanatory comments.
 
 
- (package-initialize)
+(package-initialize)
 
 (setq load-path (append
                  load-path
@@ -42,7 +42,7 @@
 ;; do not backup files
 ;;(setq make-backup-file nil)
 ;; big file highligh too slow;
-(setq lazy-lock-defer-on-scrolling t)
+(setq lazy-lock-defer-on-scrolling nil)
 ;;(setq font-lock-support-mode 'lazy-lock-mode)
 (setq font-lock-maximum-decoration t)
 ;; auto complete function
@@ -107,30 +107,27 @@
  '(case-fold-search t)
  '(column-number-mode t)
  '(current-language-environment "UTF-8")
- '(custom-enabled-themes (quote (sanityinc-solarized-dark)))
+ '(custom-enabled-themes '(sanityinc-solarized-dark))
  '(custom-safe-themes
-   (quote
-    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
+   '("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default))
  '(display-time-mode t)
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(fci-rule-color "#eee8d5")
  '(global-font-lock-mode t nil (font-lock))
- '(ltext-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
+ '(ltext-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
  '(make-backup-files nil)
- '(message-send-mail-function (quote message-send-mail-with-sendmail))
+ '(message-send-mail-function 'message-send-mail-with-sendmail)
  '(org-agenda-files
-   (quote
-    ("~/documents/personel/notes/kernel.org" "~/documents/work/notes/note.org" "~/documents/work/notes/work.org" "~/documents/work/notes/tasks.org")))
+   '("~/documents/personel/notes/kernel.org" "~/documents/work/notes/note.org" "~/documents/work/notes/work.org" "~/documents/work/notes/tasks.org"))
  '(package-selected-packages
-   (quote
-    (ox-hugo notmuch tabbar ivy-mpdel libmpdel mpdel transient jinja2-mode htmlize plantuml-mode jedi rfc-mode markdown-mode color-theme-sanityinc-solarized use-package posframe gnu-elpa-keyring-update yang-mode metaweblog org2blog pyim pyim-basedict go-mode helm less-css-mode ztree yaml-mode vbasense uncrustify-mode sr-speedbar screenshot magit lua-mode json-mode groovy-mode gradle-mode flymake-lua cmake-font-lock)))
- '(send-mail-function (quote sendmail-query-once))
+   '(exec-path-from-shell highlight-indent-guides highlight-indentation yaml eglot typescript-mode protobuf-mode lsp-mode dockerfile-mode cmake-mode ox-hugo notmuch tabbar ivy-mpdel libmpdel mpdel transient jinja2-mode htmlize plantuml-mode jedi rfc-mode markdown-mode color-theme-sanityinc-solarized use-package posframe gnu-elpa-keyring-update yang-mode metaweblog org2blog pyim pyim-basedict go-mode less-css-mode ztree yaml-mode vbasense uncrustify-mode sr-speedbar screenshot magit lua-mode json-mode groovy-mode gradle-mode flymake-lua cmake-font-lock))
+ '(safe-local-variable-values '((c-indent-level . 4)))
+ '(send-mail-function 'sendmail-query-once)
  '(show-paren-mode t)
  '(tool-bar-mode nil nil (tool-bar))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#dc322f")
+   '((20 . "#dc322f")
      (40 . "#cb4b16")
      (60 . "#b58900")
      (80 . "#859900")
@@ -147,7 +144,7 @@
      (300 . "#d33682")
      (320 . "#6c71c4")
      (340 . "#dc322f")
-     (360 . "#cb4b16"))))
+     (360 . "#cb4b16")))
  '(vc-annotate-very-old-color nil))
 
 (prefer-coding-system 'utf-8)
@@ -178,10 +175,10 @@
 ;; )
 
 (if (display-graphic-p)
-(let ((emacs-font-size 15)
-      (emacs-font-name "Iosevka Custom"))
-  ;;      (emacs-font-name "Sarasa Mono SC"))
-  ;;      (emacs-font-name "DejaVu Sans Mono"))
+(let ((emacs-font-size 14)
+;;      (emacs-font-name "Iosevka Custom"))
+      (emacs-font-name "Sarasa Mono SC"))
+;;        (emacs-font-name "DejaVu Sans Mono"))
   (set-frame-font (format "%s-%s" (eval emacs-font-name) (eval emacs-font-size)))
   (set-fontset-font (frame-parameter nil 'font) 'unicode (eval emacs-font-name))))
 
@@ -235,6 +232,7 @@
   (cscope-minor-mode 1))
 (add-hook 'c-mode-hook 'my-c-mode-common-hook)
 (add-hook 'c-mode-hook 'cscope-minor-mode-on)
+(add-hook 'c++-mode-hook 'cscope-minor-mode-on)
 
 (setq auto-mode-alist
       (cons '("\\.test\\'" . tcl-mode)
@@ -287,17 +285,25 @@
    (ditaa . t)))
 
 ;; org 模式 export plantuml配置
-(setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
-(setq plantuml-default-exec-mode 'jar)
+(use-package plantuml-mode
+  :init
+    (setq plantuml-default-exec-mode 'jar)
+    (setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+    (setq org-plantuml-jar-path (expand-file-name "/usr/share/plantuml/plantuml.jar"))
+    (setq plantuml-java-args (list "-Djava.awt.headless=true" "-jar"))
+    (setq org-startup-with-inline-images t)
+    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+    (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
+
 (require 'ob-plantuml)
 
 ;; org 模式 export ditaa配置
 (setq org-ditaa-jar-path "/usr/bin/ditaa")
 (require 'ob-ditaa)
 
-
-(with-eval-after-load 'ox
-  (require 'ox-hugo))
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
 
 
 ;;(setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
@@ -401,8 +407,8 @@
 (setq tramp-use-ssh-controlmaster-options nil)
 (require 'package)
 (add-to-list 'package-archives
-	      '("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/") t)
-(package-initialize)
+	      '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t)
+;;(package-initialize)
 
 (setq tramp-ssh-controlmaster-options
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
@@ -684,12 +690,23 @@ putting the matching lines in a buffer named *matching*"
 
 
 ;; emacs daemon 模式忽略了主题和字体的配置
-;(defun load-theme-font (frame)
-;  (select-frame frame)
-;  (load-theme 'sanityinc-solarized-dark t))
+(defun load-theme-font (frame)
+ (select-frame frame)
+ (load-theme 'sanityinc-solarized-dark t))
 
 ;(if (daemonp)
 ;    (add-hook 'after-make-frame-functions #'load-theme-font)
 ;  (load-theme 'sanityinc-solarized-dark t))
 
 (menu-bar-mode -1)
+
+(defun my-python-mode-action ()
+  (make-local-variable 'before-save-hook)
+  (add-hook 'before-save-hook (lambda ()
+                                (save-restriction
+                                  (widen)
+                                  (untabify (point-min) (point-max))))))
+
+(add-hook 'python-mode-hook 'my-python-mode-action)
+
+(setq-local auto-hscroll-mode 'current-line)
